@@ -1,9 +1,9 @@
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, Text } from "react-native";
 
 export default function App() {
-    return (
-        <ScrollView>
-            <Text>Hello World!</Text>
-        </ScrollView>
-    );
+  return (
+    <ScrollView>
+      <Text>Hello World!</Text>
+    </ScrollView>
+  );
 }
