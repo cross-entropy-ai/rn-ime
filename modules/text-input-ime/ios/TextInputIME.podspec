@@ -6,11 +6,12 @@ Pod::Spec.new do |s|
   s.name           = 'TextInputIME'
   s.version        = '0.0.0'
   s.summary        = 'TextInputIME native module'
-  s.description    = 'TextInputIME native module'
-  s.author         = ''
-  s.homepage       = ''
+  s.description    = 'Reference implementation of TextInputIME'
+  s.author         = 'Cross-entropy AI'
+  s.homepage       = 'https://cross-entropy.ai'
   s.platforms      = { :ios => '16.4' }
-  s.source         = { git: '' }
+  s.source         = { git: 'https://github.com/cross-entropy-ai/rn-ime' }
+  s.license        = { :type => 'MIT' }
   s.static_framework = true
 
   s.dependency 'ExpoModulesCore'
