@@ -40,7 +40,6 @@ A naive override of only `unmarkText` misses path (2) and the `composing` flag g
 This is a minimal, illustrative implementation — **not** a drop-in replacement for `<TextInput>`:
 
 - **iOS only.** No Android implementation.
-- **The standard IME underline under marked text is lost.** UITextField normally renders the in-progress marked text with a dotted underline; this implementation does not preserve that styling. The marked text is still visible inline, but without the underline cue.
 - **Minimal style support.** The wrapper forwards `ViewStyle` as-is. RN's `TextInput` treats `padding` as `textContainerInset` on `RCTUITextField`; this wrapper does not. Use `height` instead of `padding` if you want to match RN's visual sizing (see `app.tsx`).
 - **No prop forwarding** for `fontSize`, `color`, `keyboardType`, `secureTextEntry`, `placeholder`, `multiline`, accessibility, etc.
 

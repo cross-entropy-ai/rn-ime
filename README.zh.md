@@ -40,7 +40,6 @@ React Native 自带的 `<TextInput>` 在 iOS 上不暴露 IME 合成的生命周
 这是一份最小、示意性的实现，**不是** `<TextInput>` 的替代品：
 
 - **仅 iOS**，没有 Android 实现。
-- **会丢失 IME 合成的下划线**。UITextField 正常情况下会在合成中的 marked text 下方显示点状下划线，本实现没有保留这个样式。marked text 仍然会显示在输入框里，但少了下划线提示。
 - **样式支持有限**。wrapper 直接透传 `ViewStyle`。RN 的 `TextInput` 把 `padding` 解释成 `RCTUITextField` 的 `textContainerInset`，这里没做这层映射。想跟 RN 的视觉尺寸对齐，请用 `height` 而不是 `padding`（见 `app.tsx`）。
 - **未转发** `fontSize`、`color`、`keyboardType`、`secureTextEntry`、`placeholder`、`multiline`、无障碍属性等。
 
