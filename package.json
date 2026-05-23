@@ -4,7 +4,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "prebuild": "expo prebuild",
+    "prebuild": "expo prebuild --platform ios",
     "ios": "expo run:ios",
     "check": "biome check --write"
   },
