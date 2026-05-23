@@ -2,6 +2,8 @@
 
 [中文](./README.zh.md)
 
+<img align="right" src="./demo.gif" width="240" alt="Demo: typing pinyin into the IME-aware text input, showing live composing state and marked text" />
+
 A reference Expo native module that surfaces iOS IME composition events to React Native.
 
 ## What this fixes

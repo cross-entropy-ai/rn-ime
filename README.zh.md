@@ -2,6 +2,8 @@
 
 [English](./README.md)
 
+<img align="right" src="./demo.gif" width="240" alt="演示：在 IME-aware 输入框里打拼音，实时显示 composing 状态和 marked text" />
+
 一份把 iOS IME 合成事件暴露给 React Native 的 Expo 原生模块**参考实现**。
 
 ## 修了什么
