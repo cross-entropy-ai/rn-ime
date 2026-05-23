@@ -1,45 +1,20 @@
 import ExpoModulesCore
 import UIKit
 
-class IMEAwareTextField: UITextField {
-  weak var owner: TextInputIMEView?
-  private var isComposing = false
-
-  override func setMarkedText(_ markedText: String?, selectedRange: NSRange) {
-    super.setMarkedText(markedText, selectedRange: selectedRange)
-    let text = markedText ?? ""
-    if markedTextRange != nil && !isComposing {
-      isComposing = true
-      owner?.onCompositionStart([:])
-    }
-    if isComposing {
-      owner?.onCompositionUpdate(["text": text])
-    }
-  }
-
-  override func unmarkText() {
-    let wasComposing = isComposing
-    super.unmarkText()
-    if wasComposing {
-      isComposing = false
-      owner?.onCompositionEnd(["text": self.text ?? ""])
-    }
-  }
-}
-
 class TextInputIMEView: ExpoView {
-  let textField = IMEAwareTextField()
   let onChangeText = EventDispatcher()
   let onCompositionStart = EventDispatcher()
   let onCompositionUpdate = EventDispatcher()
   let onCompositionEnd = EventDispatcher()
 
+  private let textField = IMEAwareTextField()
+  private var composing = false
+  private var lastMarked: String?
+
   required init(appContext: AppContext? = nil) {
     super.init(appContext: appContext)
-    textField.owner = self
-    textField.borderStyle = .none
-    textField.font = UIFont.systemFont(ofSize: UIFont.systemFontSize)
-    textField.addTarget(self, action: #selector(handleEditingChanged), for: .editingChanged)
+    textField.onMarkedTextChange = { [weak self] in self?.syncComposing() }
+    textField.addTarget(self, action: #selector(editingChanged), for: .editingChanged)
     addSubview(textField)
   }
 
@@ -49,14 +24,48 @@ class TextInputIMEView: ExpoView {
   }
 
   func setValue(_ text: String) {
-    if textField.markedTextRange != nil { return }
-    if textField.text != text {
-      textField.text = text
+    guard textField.markedTextRange == nil, textField.text != text else { return }
+    textField.text = text
+  }
+
+  @objc private func editingChanged() {
+    syncComposing()
+    if textField.markedTextRange == nil {
+      onChangeText(["text": textField.text ?? ""])
     }
   }
 
-  @objc private func handleEditingChanged() {
-    if textField.markedTextRange != nil { return }
-    onChangeText(["text": textField.text ?? ""])
+  private func syncComposing() {
+    let range = textField.markedTextRange
+    if range != nil, !composing {
+      composing = true
+      lastMarked = nil
+      onCompositionStart()
+    }
+    if let range {
+      let marked = textField.text(in: range) ?? ""
+      if marked != lastMarked {
+        lastMarked = marked
+        onCompositionUpdate(["text": marked])
+      }
+    } else if composing {
+      composing = false
+      lastMarked = nil
+      onCompositionEnd(["text": textField.text ?? ""])
+    }
+  }
+}
+
+private class IMEAwareTextField: UITextField {
+  var onMarkedTextChange: (() -> Void)?
+
+  override func setMarkedText(_ markedText: String?, selectedRange: NSRange) {
+    super.setMarkedText(markedText, selectedRange: selectedRange)
+    onMarkedTextChange?()
+  }
+
+  override func unmarkText() {
+    super.unmarkText()
+    onMarkedTextChange?()
   }
 }
