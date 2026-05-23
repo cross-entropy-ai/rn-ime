@@ -37,7 +37,8 @@ class TextInputIMEView: ExpoView {
   required init(appContext: AppContext? = nil) {
     super.init(appContext: appContext)
     textField.owner = self
-    textField.borderStyle = .roundedRect
+    textField.borderStyle = .none
+    textField.font = UIFont.systemFont(ofSize: UIFont.systemFontSize)
     textField.addTarget(self, action: #selector(handleEditingChanged), for: .editingChanged)
     addSubview(textField)
   }
