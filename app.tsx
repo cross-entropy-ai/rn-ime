@@ -17,6 +17,7 @@ const TextInputStyle: StyleProp<ViewStyle> = {
 
 export default function App() {
   const [rnText, setRnText] = useState("");
+  const [composing, setComposing] = useState(false);
   const [rnIMEText, setRnIMEText] = useState("");
 
   return (
@@ -49,7 +50,10 @@ export default function App() {
             style={TextInputStyle}
             value={rnIMEText}
             onChangeText={setRnIMEText}
+            onCompositionStart={() => setComposing(true)}
+            onCompositionEnd={() => setComposing(false)}
           />
+          <Text>Composing: {composing.toString()}</Text>
           <Text>State: {rnIMEText}</Text>
         </View>
       </View>
