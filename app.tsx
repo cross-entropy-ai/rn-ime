@@ -7,6 +7,7 @@ import {
   View,
   type ViewStyle,
 } from "react-native";
+import TextInputIME from "./modules/text-input-ime";
 
 const TextInputStyle: StyleProp<ViewStyle> = {
   borderWidth: 1,
@@ -15,7 +16,8 @@ const TextInputStyle: StyleProp<ViewStyle> = {
 };
 
 export default function App() {
-  const [rnText, setRNText] = useState("");
+  const [rnText, setRnText] = useState("");
+  const [rnIMEText, setRnIMEText] = useState("");
 
   return (
     <ScrollView
@@ -30,14 +32,25 @@ export default function App() {
         <Text style={{ fontSize: 24, fontWeight: "bold" }}>
           Text Input Demo
         </Text>
+
         <View style={{ gap: 8 }}>
           <Text>React Native</Text>
           <TextInput
             style={TextInputStyle}
             value={rnText}
-            onChangeText={setRNText}
+            onChangeText={setRnText}
           />
           <Text>State: {rnText}</Text>
+        </View>
+
+        <View style={{ gap: 8 }}>
+          <Text>TextInputIME</Text>
+          <TextInputIME
+            style={TextInputStyle}
+            value={rnIMEText}
+            onChangeText={setRnIMEText}
+          />
+          <Text>State: {rnIMEText}</Text>
         </View>
       </View>
     </ScrollView>
