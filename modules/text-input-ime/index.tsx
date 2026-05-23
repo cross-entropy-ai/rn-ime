@@ -2,8 +2,6 @@ import { requireNativeView } from "expo";
 import type { ComponentType } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
 
-const DEFAULT_STYLE: ViewStyle = { minHeight: 36 };
-
 type NativeEvent<T> = { nativeEvent: T };
 type NativeProps = {
   value?: string;
@@ -30,7 +28,7 @@ export default function TextInputIME(props: TextInputIMEProps) {
   return (
     <NativeView
       value={props.value}
-      style={[DEFAULT_STYLE, props.style]}
+      style={props.style}
       onChangeText={(e) => props.onChangeText?.(e.nativeEvent.text)}
       onCompositionStart={props.onCompositionStart}
       onCompositionUpdate={(e) =>

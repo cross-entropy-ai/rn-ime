@@ -12,7 +12,7 @@ import TextInputIME from "./modules/text-input-ime";
 const TextInputStyle: StyleProp<ViewStyle> = {
   borderWidth: 1,
   borderRadius: 4,
-  padding: 4,
+  height: 28,
 };
 
 export default function App() {
