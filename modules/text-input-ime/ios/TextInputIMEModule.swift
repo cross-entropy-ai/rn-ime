@@ -4,8 +4,17 @@ public class TextInputIMEModule: Module {
   public func definition() -> ModuleDefinition {
     Name("TextInputIME")
 
-    Function("hello") { () -> String in
-      return "Hello from TextInputIME"
+    View(TextInputIMEView.self) {
+      Events(
+        "onChangeText",
+        "onCompositionStart",
+        "onCompositionUpdate",
+        "onCompositionEnd"
+      )
+
+      Prop("value") { (view: TextInputIMEView, text: String) in
+        view.setValue(text)
+      }
     }
   }
 }
