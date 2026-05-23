@@ -17,9 +17,8 @@ const TextInputStyle: StyleProp<ViewStyle> = {
 
 export default function App() {
   const [rnText, setRnText] = useState("");
-  const [composing, setComposing] = useState(false);
   const [rnIMEText, setRnIMEText] = useState("");
-  const [composingText, setComposingText] = useState("");
+  const [composition, setComposition] = useState<string | null>(null);
 
   return (
     <ScrollView
@@ -51,20 +50,12 @@ export default function App() {
             style={TextInputStyle}
             value={rnIMEText}
             onChangeText={setRnIMEText}
-            onCompositionStart={() => {
-              setComposing(true);
-              setComposingText("");
-            }}
-            onCompositionUpdate={(text) => {
-              setComposingText(text);
-            }}
-            onCompositionEnd={() => {
-              setComposing(false);
-              setComposingText("");
-            }}
+            onCompositionStart={() => setComposition("")}
+            onCompositionUpdate={setComposition}
+            onCompositionEnd={() => setComposition(null)}
           />
-          <Text>Composing: {composing.toString()}</Text>
-          <Text>ComposingText: {composingText}</Text>
+          <Text>Composing: {String(composition !== null)}</Text>
+          <Text>ComposingText: {composition ?? ""}</Text>
           <Text>State: {rnIMEText}</Text>
         </View>
       </View>
