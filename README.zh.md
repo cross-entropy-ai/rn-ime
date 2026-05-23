@@ -6,7 +6,7 @@
 
 一份把 iOS IME 合成事件暴露给 React Native 的 Expo 原生模块**参考实现**。
 
-## 修了什么
+### 修了什么
 
 React Native 自带的 `<TextInput>` 在 iOS 上不暴露 IME 合成的生命周期事件。App 只能拿到 `onChangeText`（提交后的文本），没办法知道用户当前是不是正在合成（比如打 `ni` 等着选 `你`），也拿不到合成中的 marked text。
 
@@ -25,7 +25,7 @@ React Native 自带的 `<TextInput>` 在 iOS 上不暴露 IME 合成的生命周
 | `onCompositionEnd(text)` | 合成提交或终止 |
 | `onChangeText(text)` | 最终提交的文本 —— 合成期间不触发 |
 
-## 实现要点
+### 实现要点
 
 关键在于**可靠地检测合成结束**。iOS 提交 IME 输入有三条路径：
 
@@ -35,7 +35,7 @@ React Native 自带的 `<TextInput>` 在 iOS 上不暴露 IME 合成的生命周
 
 只 override `unmarkText` 会漏掉路径 (2)，`composing` 状态会卡在 true。`modules/text-input-ime/ios/TextInputIMEView.swift` 里的做法是把三条路径都汇到 `syncComposing()`，用 `markedTextRange != nil` 的**边沿**驱动 start/end —— 不管 IME 走哪条路径，每次合成 start 和 end 都各只发一次。`lastMarked` 缓存用来给 `onCompositionUpdate` 去重，因为同一次按键会同时触发 `setMarkedText`（已 override）和 `editingChanged` 控件事件，不去重会发两次重复事件。
 
-## 状态：参考实现
+### 状态：参考实现
 
 这是一份最小、示意性的实现，**不是** `<TextInput>` 的替代品：
 
@@ -46,7 +46,7 @@ React Native 自带的 `<TextInput>` 在 iOS 上不暴露 IME 合成的生命周
 
 要用到生产环境，请按需在 `TextInputIMEView.swift` 里加属性，并在 `TextInputIMEModule.swift` 里注册。
 
-## Demo
+### Demo
 
 ```sh
 bun install

@@ -6,7 +6,7 @@
 
 A reference Expo native module that surfaces iOS IME composition events to React Native.
 
-## What this fixes
+### What this fixes
 
 React Native's built-in `<TextInput>` does not expose IME (input method editor) composition lifecycle events on iOS. Apps only see `onChangeText`, which fires for committed text. There is no way to know whether the user is mid-composition (e.g. typing `ni` to select `你`) or what the in-flight marked text is.
 
@@ -25,7 +25,7 @@ This matters for:
 | `onCompositionEnd(text)` | Composition is committed or aborted |
 | `onChangeText(text)` | Final committed text — does not fire during composition |
 
-## Implementation notes
+### Implementation notes
 
 The non-obvious part is detecting composition end reliably. iOS commits IME input through one of three paths:
 
@@ -35,7 +35,7 @@ The non-obvious part is detecting composition end reliably. iOS commits IME inpu
 
 A naive override of only `unmarkText` misses path (2) and the `composing` flag gets stuck at `true`. The fix in `modules/text-input-ime/ios/TextInputIMEView.swift` routes all three paths through a single `syncComposing()` that is **edge-triggered** on `markedTextRange != nil`, so start and end fire exactly once per composition regardless of how the IME chooses to commit. A `lastMarked` cache dedupes `onCompositionUpdate` because the same keystroke triggers both `setMarkedText` (overridden) and the `editingChanged` control event.
 
-## Status: reference implementation
+### Status: reference implementation
 
 This is a minimal, illustrative implementation — **not** a drop-in replacement for `<TextInput>`:
 
@@ -46,7 +46,7 @@ This is a minimal, illustrative implementation — **not** a drop-in replacement
 
 For production use, extend `TextInputIMEView.swift` with the properties you need and register them in `TextInputIMEModule.swift`.
 
-## Demo
+### Demo
 
 ```sh
 bun install
